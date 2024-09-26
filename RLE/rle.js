@@ -99,23 +99,7 @@ function decodeJump(string) {
 	}
 	return result;
 }
-/*
-function toHex(str) {
-    var hex = "";
-    for (var i = 0; i < str.length; i++) {
-        hex += ("000" + str.charCodeAt(i).toString(16)).slice(-4); // UTF-16 code units
-    }
-    return hex;
-}
 
-function fromHex(hex) {
-    var str = "";
-    for (var i = 0; i < hex.length; i += 4) {
-        str += String.fromCharCode(parseInt(hex.substr(i, 4), 16));
-    }
-    return str;
-}
-*/
 // ESCAPE
 // read initial string from in.txt
 var fileInputEncode = fso.OpenTextFile("in.txt", iomode=1, create=false);
@@ -143,16 +127,11 @@ fileOutputDecoded.Close();
 // read initial string from dout1.txt
 var fileInputEncode = fso.OpenTextFile("dout1.txt", iomode=1, create=false, format=-1);
 var inputEncode = fileInputEncode.ReadAll();
-//WSH.echo("initial: " + inputEncode);
 fileInputEncode.Close();
 // encode for the first time and write it to eout2.txt
 var outputEncoded = encodeJump(inputEncode);
 WSH.echo("encoded 2: " + outputEncoded);
 var fileOutputEncoded = fso.OpenTextFile("eout2.txt", iomode=2, create=true, format=-1);
-//var hex = toHex(outputEncoded);
-//var nohex = fromHex(hex);
-//WSH.echo("hex: " + hex);
-//WSH.echo("no hex: " + fromHex(hex));
 fileOutputEncoded.Write(outputEncoded);
 fileOutputEncoded.Close();
 // read encoded string from eout2.txt
