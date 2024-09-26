@@ -24,7 +24,7 @@ function encode(string) {
 		count = 0;
 		i+=countTemp;
 		countTemp = 0;
-	}
+	}	
 	return result;
 }
 
@@ -59,6 +59,11 @@ function encodeJump(string) {
 		if (count === 1) {
 			while (string.charAt(i+count) !== string.charAt(i+count+1)) {
 				count++;
+			}
+			while (count > 127) {
+				result += ((String.fromCharCode(128 + 127) + string.substr(i, 127)));
+				count -= 127;
+				i += 127;
 			}
 			result += (String.fromCharCode(128 + count) + string.substr(i, count));
 		} else {
