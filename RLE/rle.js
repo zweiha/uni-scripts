@@ -7,9 +7,7 @@ function encode(string) {
 	var countTemp = 0;
 	
 	while (i<string.length) {
-		while (string.charAt(i) === string.charAt(i+count)) {
-			count++;
-		}
+		while (string.charAt(i) === string.charAt(i+count)) {count++;}
 		while (count > 255) {
 			result += ("#" + String.fromCharCode(255) + string.charAt(i));
 			count -= 255;
@@ -53,13 +51,9 @@ function encodeJump(string) {
 	var countTemp = 0;
 
 	while (i<string.length) {
-		while (string.charAt(i) === string.charAt(i+count)) {
-			count++;
-		}
+		while (string.charAt(i) === string.charAt(i+count)) {count++;}
 		if (count === 1) {
-			while (string.charAt(i+count) !== string.charAt(i+count+1)) {
-				count++;
-			}
+			while (string.charAt(i+count) !== string.charAt(i+count+1)) {count++;}
 			while (count > 127) {
 				result += ((String.fromCharCode(128 + 127) + string.substr(i, 127)));
 				count -= 127;
@@ -92,7 +86,6 @@ function decodeJump(string) {
 	
 	while (i < string.length) {
 		count = string.charCodeAt(i);
-		//WSH.echo(count);
 		if (count > 127) {
 			result += string.substr(i+1, count-128);
 			i+=(count-127);
@@ -142,7 +135,6 @@ fileOutputEncoded.Close();
 // read encoded string from eout2.txt
 var fileInputDecode = fso.OpenTextFile("eout2.txt", iomode=1, create=false, format=-1);
 var inputDecode = fileInputDecode.ReadAll();
-//var noHex = fromHex(inputDecode);
 fileInputDecode.Close();
 // decode it and qrite it to dout2.txt
 var outputDecoded = decodeJump(inputDecode);
