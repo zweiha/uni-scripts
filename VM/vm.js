@@ -38,7 +38,9 @@ function interprete(memory){
 				ip+=2;
 				break;
 			case "exit":
-				WScript.Quit();		
+				WScript.Quit();	
+			case "buh":
+				WSH.echo("buh1");	
 		}
 	}
 }
