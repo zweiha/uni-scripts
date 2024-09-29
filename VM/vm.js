@@ -40,7 +40,7 @@ function interprete(memory){
 			case "exit":
 				WScript.Quit();	
 			case "buh":
-				WSH.echo("buh");	
+				WSH.echo("buh1");	
 		}
 	}
 }
