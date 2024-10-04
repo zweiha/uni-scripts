@@ -1,8 +1,10 @@
+in 103 170
 in 100 1
 in 101 1
 in 102
-jmpz 102 21
+jmpg 102 103 30
+jmpz 102 28
 mp 101 102 101
 sub 102 100 102
-jmp 8
+jmp 11
 out 101

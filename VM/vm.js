@@ -11,7 +11,7 @@ function initialize(program) {
 	programFile.Close();
 	contents+=" exit";
 
-	var sContents = contents.split(/\s+/); //split by \n and " " (not sure i have to account for \n, doing it just to be sure)
+	var sContents = contents.split(/\s+/);
 	for (var i=0; i < sContents.length; i++) {
 		memory.push(sContents[i]);
 	}
@@ -20,7 +20,7 @@ function initialize(program) {
 
 function interprete(memory){
 	var ip = 0;
-	//TODO check memory state
+	var mode;
 
 	while (true) {
 		switch(memory[ip]) {
@@ -29,15 +29,22 @@ function interprete(memory){
 				if (!isNaN(memory[ip+2])){
 					memory[memory[ip+1]] = parseInt(memory[ip+2]);
 					ip+=3;
-				} else {
-					memory[memory[ip+1]] = parseInt(WScript.StdIn.ReadLine());
-					ip+=2;
+					break;
 				}
+				var input = parseFloat(WScript.StdIn.ReadLine());
+				if (input != parseInt(input)){
+					WSH.echo("Wrong input");
+					WSH.Quit();
+				}
+				memory[memory[ip+1]] = parseInt(input);
+				ip+=2;
+				//WSH.echo(memory);
 				break;
 			case "out":
 				WSH.echo(memory[memory[parseInt(ip)+1]]);
 				ip = parseInt(ip) + 2;
 				break;	
+
 			// basic numeric operations	
 			case "add":	
 				memory[memory[ip+3]] = memory[memory[ip+1]] + memory[memory[ip+2]];
@@ -57,7 +64,7 @@ function interprete(memory){
 				break;
 
 			// flow control	
-			case "mov":
+			case "mov": // more like "copy"
 				memory[memory[ip+2]] = memory[memory[ip+1]];
 				ip+=3;	
 				break;
@@ -65,18 +72,36 @@ function interprete(memory){
 				ip = memory[ip+1];
 				break;
 			case "jmpz":
-				if (memory[memory[parseInt(ip)+1]] == 0) {
-					ip = memory[parseInt(ip)+2];
-				} else {
-					ip = parseInt(ip) + 3;
+				if (memory[memory[parseInt(ip)+1]] != 0) {
+					ip = parseInt(ip)+3;
+					break;
 				}
+				ip = memory[parseInt(ip)+2];
 				break;
+			case "jmpg":
+				if (memory[memory[parseInt(ip)+1]] <= memory[memory[parseInt(ip)+2]]) {
+					ip = parseInt(ip)+4;
+					break;
+				}
+				ip = memory[parseInt(ip)+3];
+				break;
+			case "jmpl":
+				if (memory[memory[parseInt(ip)+1]] >= memory[memory[parseInt(ip)+2]]) {
+					ip = parseInt(ip)+4;
+					break;
+				}
+				ip = memory[parseInt(ip)+3];
+				break;
+				
 			case "exit":
 				WScript.Quit();	
-				
+
 		}
 	}
 }
 
+//WSH.echo("input two natural numbers, one per line: ");
+//interprete(initialize("gcm.txt"));
 
+WSH.echo("input a natural number: ");
 interprete(initialize("factorial.txt"));
