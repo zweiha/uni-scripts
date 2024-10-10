@@ -1,20 +1,14 @@
-function initialize(program) {
+function initialize(programName) {
 	var memory = new Array();
 	var contents = "";
 
 	var fso = new ActiveXObject("Scripting.FileSystemObject");
-	var programFile = fso.OpenTextFile(program, iomode=1);
-	while (!programFile.AtEndOfStream) {
-		var line = programFile.ReadLine();
-		contents += (line + " ");
-	}
+	var programFile = fso.OpenTextFile(programName, iomode=1);
+	program = programFile.ReadAll();
 	programFile.Close();
-	contents+=" exit";
 
-	var sContents = contents.split(/\s+/);
-	for (var i=0; i < sContents.length; i++) {
-		memory.push(sContents[i]);
-	}
+	var memory = program.split(/\s+/);
+	if (memory[memory.length-1] !== "exit") memory.push("exit");
 	return memory;
 }
 
@@ -92,10 +86,11 @@ function interprete(memory){
 				}
 				ip = memory[parseInt(ip)+3];
 				break;
-				
 			case "exit":
-				WScript.Quit();	
-
+				WScript.Quit();		
+			default: 
+				WSH.echo("Syntax error at address " + ip);
+				WScript.Quit();		
 		}
 	}
 }
