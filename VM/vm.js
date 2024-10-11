@@ -1,12 +1,14 @@
 function initialize(programName) {
 	var memory = new Array();
 	var contents = "";
-
 	var fso = new ActiveXObject("Scripting.FileSystemObject");
+	if (!fso.FileExists(programName)) {
+		WSH.echo("The program specified does not exist.");
+		WSH.Quit();
+	}
 	var programFile = fso.OpenTextFile(programName, iomode=1);
 	program = programFile.ReadAll();
 	programFile.Close();
-
 	var memory = program.split(/\s+/);
 	if (memory[memory.length-1] !== "exit") memory.push("exit");
 	return memory;
@@ -35,7 +37,11 @@ function interprete(memory){
 				//WSH.echo(memory);
 				break;
 			case "out":
-				WSH.echo(memory[memory[parseInt(ip)+1]]);
+				if (isNaN(memory[parseInt(ip)+1])) {
+					WSH.echo(memory[parseInt(ip)+1]);
+				} else {
+					WSH.echo(memory[memory[parseInt(ip)+1]]);
+				}
 				ip = parseInt(ip) + 2;
 				break;	
 
@@ -87,10 +93,10 @@ function interprete(memory){
 				ip = memory[parseInt(ip)+3];
 				break;
 			case "exit":
-				WScript.Quit();		
+				WSH.Quit();		
 			default: 
 				WSH.echo("Syntax error at address " + ip);
-				WScript.Quit();		
+				WSH.Quit();		
 		}
 	}
 }
@@ -98,5 +104,6 @@ function interprete(memory){
 //WSH.echo("input two natural numbers, one per line: ");
 //interprete(initialize("gcm.txt"));
 
-WSH.echo("input a natural number: ");
-interprete(initialize("factorial.txt"));
+//WSH.echo("input a natural number: ");
+var argument = WScript.arguments(0);
+interprete(initialize(argument));
