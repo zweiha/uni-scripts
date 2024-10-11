@@ -1,10 +1,16 @@
 in 101
 in 102
-jmpz 102 27
+jmpz 101 9
+jmp 17
+jmpz 102 14
+jmp 17
+out undefined
+exit
+jmpz 102 40
 div 101 102 103
 mp 103 102 103
 sub 101 103 103
 mov 102 101
 mov 103 102
-jmp 4
+jmp 17
 out 101
