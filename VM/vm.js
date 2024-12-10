@@ -17,7 +17,6 @@ function initialize(programName) {
 function interprete(memory){
 	var ip = 0;
 	var mode;
-
 	while (true) {
 		switch(memory[ip]) {
 			//IO
@@ -34,7 +33,6 @@ function interprete(memory){
 				}
 				memory[memory[ip+1]] = parseInt(input);
 				ip+=2;
-				//WSH.echo(memory);
 				break;
 			case "out":
 				if (isNaN(memory[parseInt(ip)+1])) {
@@ -44,7 +42,6 @@ function interprete(memory){
 				}
 				ip = parseInt(ip) + 2;
 				break;	
-
 			// basic numeric operations	
 			case "add":	
 				memory[memory[ip+3]] = memory[memory[ip+1]] + memory[memory[ip+2]];
@@ -62,7 +59,6 @@ function interprete(memory){
 				memory[memory[ip+3]] = Math.floor(memory[memory[ip+1]] / memory[memory[ip+2]]);
 				ip+=4;	
 				break;
-
 			// flow control	
 			case "mov": // more like "copy"
 				memory[memory[ip+2]] = memory[memory[ip+1]];
@@ -100,10 +96,5 @@ function interprete(memory){
 		}
 	}
 }
-
-//WSH.echo("input two natural numbers, one per line: ");
-//interprete(initialize("gcm.txt"));
-
-//WSH.echo("input a natural number: ");
 var argument = WScript.arguments(0);
 interprete(initialize(argument));
